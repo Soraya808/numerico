@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <script>
+if (window.location.protocol === "file:") {
+    window.location.replace(
+        "http://localhost/represa_la_paz_mysql/public/index.html"
+    );
+}
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>desafio</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;800&family=Source+Serif+4:wght@400;600&display=swap">
+<style>
+:root{--bg:#eef5f5;--surf:#fff;--ink:#0c2a38;--mut:#52707d;--line:#c9dde0;--deep:#0f3d56;--agua:#1b9aaa;--heun:#e08a1e;--rk:#d1365b;--ok:#2f8f5b;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#071a24;--surf:#0d2937;--ink:#e3f1f3;--mut:#8db0bb;--line:#1d4558;--deep:#7fd0dd;--agua:#3fc1d1;--heun:#f1a649;--rk:#ff6f8f;--ok:#58c88a}}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 "Source Serif 4",Georgia,serif}
+h1,h2,h3,.k{font-family:"Bricolage Grotesque","Segoe UI",sans-serif;letter-spacing:-.01em}
+.wrap{max-width:1080px;margin:auto;padding:0 20px}
+header{background:var(--deep);color:#eaf7f8;position:relative;overflow:hidden;padding:56px 0 90px}
+header h1{font-size:clamp(2.2rem,6vw,4.4rem);line-height:1.02;margin:0 0 14px;font-weight:800;max-width:15ch}
+header p{max-width:60ch;margin:0 0 8px;opacity:.92}
+header .meta{font-family:"Bricolage Grotesque",sans-serif;font-size:.9rem;opacity:.75;margin-top:18px}
+.wave{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:60px}
+.wave path{fill:var(--bg)}
+.drops{position:absolute;right:4%;top:30px;width:min(34vw,300px);opacity:.9}
+section{padding:34px 0}
+h2{font-size:1.9rem;margin:0 0 6px;font-weight:800;color:var(--deep)}
+.lead{color:var(--mut);margin:0 0 18px;max-width:70ch}
+.grid{display:grid;gap:18px}.g2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.card{background:var(--surf);border:1px solid var(--line);border-radius:14px;padding:20px}
+.card h3{margin:0 0 8px;font-size:1.15rem}
+.eq{font-family:"Source Serif 4",serif;font-size:1.25rem;background:var(--bg);border-left:4px solid var(--agua);padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0;overflow-x:auto;white-space:nowrap}
+table{border-collapse:collapse;width:100%;font-size:.88rem;font-family:"Source Serif 4",serif}
+th,td{padding:6px 9px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+th{position:sticky;top:0;background:var(--surf);font-family:"Bricolage Grotesque",sans-serif;font-weight:500;color:var(--mut)}
+th:first-child,td:first-child{text-align:left}
+.scroll{overflow:auto;max-height:340px;border:1px solid var(--line);border-radius:10px}
+.plain{max-height:none}
+form.ctl{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+label{display:flex;flex-direction:column;font:500 .85rem "Bricolage Grotesque",sans-serif;color:var(--mut);gap:4px}
+input,select{font:1rem "Source Serif 4",serif;padding:9px 10px;border:1.5px solid var(--line);border-radius:9px;background:var(--bg);color:var(--ink)}
+input:focus-visible,select:focus-visible,button:focus-visible{outline:3px solid var(--agua);outline-offset:1px}
+input.bad{border-color:var(--rk)}
+.u{font-weight:400;opacity:.8}
+button{font:800 1rem "Bricolage Grotesque",sans-serif;background:var(--deep);color:#fff;border:0;border-radius:10px;padding:12px 22px;cursor:pointer;margin-top:14px}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) button{color:#06202c}}
+button:hover{filter:brightness(1.12)}
+#err{color:var(--rk);font-weight:600;margin-top:10px;min-height:1.2em}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:18px 0}
+.kpi{background:var(--surf);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.kpi b{display:block;font:800 1.7rem "Bricolage Grotesque",sans-serif;color:var(--deep)}
+.kpi span{font-size:.85rem;color:var(--mut)}
+.kpi.warn b{color:var(--rk)}
+svg.chart{width:100%;height:auto;display:block;background:var(--surf);border:1px solid var(--line);border-radius:12px}
+svg text{font:12px "Bricolage Grotesque",sans-serif;fill:var(--mut)}
+.leg{display:flex;gap:16px;flex-wrap:wrap;font:500 .88rem "Bricolage Grotesque",sans-serif;margin:8px 0}
+.leg i{display:inline-block;width:22px;height:4px;border-radius:2px;vertical-align:middle;margin-right:6px}
+.verdict{background:var(--deep);color:#eaf7f8;border-radius:14px;padding:20px 24px}
+.verdict h3{margin-top:0;color:#eaf7f8}
+.note{font-size:.9rem;color:var(--mut)}
+footer{padding:30px 0 50px;color:var(--mut);font-size:.9rem;border-top:1px solid var(--line)}
+@media (prefers-reduced-motion:no-preference){.drops path{animation:fall 3.2s ease-in infinite}.drops path:nth-child(2){animation-delay:.9s}.drops path:nth-child(3){animation-delay:1.8s}}
+@keyframes fall{0%{transform:translateY(-14px);opacity:0}30%{opacity:1}100%{transform:translateY(26px);opacity:.15}}
+</style>
+</head>
+<body>
+<header>
+<svg class="drops" viewBox="0 0 200 200" aria-hidden="true"><path d="M50 30c20 30 30 45 30 60a30 30 0 1 1-60 0c0-15 10-30 30-60z" fill="#7fd0dd"/><path d="M130 10c14 22 22 32 22 43a22 22 0 1 1-44 0c0-11 8-21 22-43z" fill="#1b9aaa"/><path d="M150 100c16 26 25 38 25 51a25 25 0 1 1-50 0c0-13 9-25 25-51z" fill="#bfeaf0"/></svg>
+<div class="wrap">
+<h3>ESTUDIANTE: GABRIELA SORAYA FERNANDEZ CHIPANA</h3>
+<h1>¿Cuánto aguanta la represa de La Paz?</h1>
+<p>Una ecuación diferencial de primer orden para estimar el día en que el almacenamiento llega a la reserva mínima durante 90 días con pocas lluvias, y qué tanto ayuda ahorrar agua.</p>
+<p>Comparamos la solución exacta con los métodos de Heun y Runge-Kutta de 4.º orden.</p>
+<div class="meta">Métodos Numéricos · Desafío individual · <span id="autor">Gabriela [apellido]</span></div>
+</div>
+<svg class="wave" viewBox="0 0 1200 60" preserveAspectRatio="none" aria-hidden="true"><path d="M0 30 C200 0 400 60 600 30 S1000 0 1200 30 V60 H0Z"/></svg>
+</header>
+
+<main class="wrap">
+<section id="problema">
+<h2>1. Problema y contexto</h2>
+<p class="lead">Comunidad beneficiaria: hogares de La Paz y El Alto que dependen del sistema de represas. Si el almacenamiento baja de la reserva mínima, se debe racionar.</p>
+<div class="grid g2">
+<div class="card"><h3>Pregunta del desafío</h3><p>¿En qué día, dentro de una temporada seca de 90 días, el volumen almacenado llega a la reserva mínima, y cuántos días se ganan con un ahorro del 15 % o se pierden si los aportes bajan 30 %?</p></div>
+<div class="card"><h3>Meta cuantificable</h3><p>Estimar el día <em>t*</em> en que V(t*) = V<sub>mín</sub> en tres escenarios y compararlos. Los parámetros son <b>hipotéticos</b>: el modelo ilustra una situación verosímil y no es una predicción comprobada con datos reales.</p></div>
+</div>
+</section>
+
+<section id="modelo">
+<h2>2. Modelo matemático</h2>
+<p class="lead">Variable dependiente V(t), volumen almacenado (hm³). Variable independiente t, tiempo (días). Supuestos: aportes y consumo constantes, y pérdidas (evaporación, filtración) proporcionales al volumen.</p>
+<div class="grid g2">
+<div class="card"><h3>EDO con condición inicial</h3>
+<div class="eq">dV/dt = A − C − k·V,  V(0) = V₀</div>
+<p class="note">Con a = A − C (aporte neto), se tiene dV/dt = a − kV.</p></div>
+<div class="card"><h3>Parámetros y unidades</h3>
+<p><b>V₀</b> volumen inicial (hm³) · <b>A</b> aportes (hm³/día) · <b>C</b> consumo (hm³/día) · <b>k</b> pérdidas (1/día) · <b>V<sub>mín</sub></b> reserva mínima (hm³) · <b>h</b> paso (días) · <b>T</b> tiempo de simulación (días).</p></div>
+</div>
+<div class="grid g2" style="margin-top:18px">
+<div class="card"><h3>Por qué esta forma</h3><p>Si la represa está más llena, pierde más agua por evaporación y filtración, por eso el término −kV. Los aportes y el consumo se toman constantes en la temporada seca.</p></div>
+<div class="card"><h3>Escenarios</h3><p><b>Normal:</b> A y C base. <b>Ahorro 15 %:</b> C × 0.85. <b>Aportes −30 %:</b> A × 0.70.</p></div>
+</div>
+</section>
+
+<section id="analitica">
+<h2>3. Solución analítica</h2>
+<p class="lead">Es una EDO lineal; se resuelve con el factor integrante e<sup>kt</sup>.</p>
+<div class="grid g2">
+<div class="card"><h3>Solución exacta</h3>
+<div class="eq">V(t) = V<sub>eq</sub> + (V₀ − V<sub>eq</sub>)·e<sup>−kt</sup>,  V<sub>eq</sub> = a/k</div>
+<h3>Día de reserva mínima</h3>
+<div class="eq">t* = (1/k)·ln[(V₀ − V<sub>eq</sub>)/(V<sub>mín</sub> − V<sub>eq</sub>)]</div></div>
+<div class="card"><h3>Verificación por sustitución</h3>
+<p>V′(t) = −k(V₀ − V<sub>eq</sub>)e<sup>−kt</sup>. Entonces V′ + kV = −k(V₀−V<sub>eq</sub>)e<sup>−kt</sup> + kV<sub>eq</sub> + k(V₀−V<sub>eq</sub>)e<sup>−kt</sup> = kV<sub>eq</sub> = a ✓.<br>En t = 0: V(0) = V<sub>eq</sub> + V₀ − V<sub>eq</sub> = V₀ ✓.</p>
+<p id="resid" class="note"></p></div>
+</div>
+</section>
+
+<section id="sim">
+<h2>4. Simulación: Heun y RK4</h2>
+<p class="lead">Ambos métodos usan los mismos parámetros, condición inicial, intervalo y paso h. Cambia los valores y pulsa «Simular».</p>
+<form class="card ctl" id="f" onsubmit="return false">
+<label>Escenario<select id="esc"><option value="0">Normal</option><option value="1">Ahorro 15 %</option><option value="2">Aportes −30 %</option></select></label>
+<label>V₀ <span class="u">hm³ (volumen inicial)</span><input id="V0" type="number" step="any" value="20"></label>
+<label>A <span class="u">hm³/día (aportes)</span><input id="A" type="number" step="any" value="0.10"></label>
+<label>C <span class="u">hm³/día (consumo)</span><input id="C" type="number" step="any" value="0.30"></label>
+<label>k <span class="u">1/día (pérdidas)</span><input id="k" type="number" step="any" value="0.004"></label>
+<label>V<sub>mín</sub> <span class="u">hm³ (reserva mínima)</span><input id="Vm" type="number" step="any" value="5"></label>
+<label>T <span class="u">días (simulación)</span><input id="T" type="number" step="any" value="90"></label>
+<label>h₁ <span class="u">días (paso grande)</span><input id="h1" type="number" step="any" value="10"></label>
+<label>h₂ <span class="u">días (paso pequeño)</span><input id="h2" type="number" step="any" value="2"></label>
+<div><button id="go">Simular</button><div id="err" role="alert"></div></div>
+</form>
+<div id="out" hidden>
+<div class="kpis" id="kpis"></div>
+<h3>Curva de almacenamiento (paso h₁)</h3>
+<div class="leg"><span><i style="background:var(--agua)"></i>Exacta</span><span><i style="background:var(--heun)"></i>Heun</span><span><i style="background:var(--rk)"></i>RK4</span><span><i style="background:var(--mut)"></i>Reserva mínima</span></div>
+<div id="ch1"></div>
+<h3 style="margin-top:26px">Los tres escenarios (solución exacta)</h3>
+<div id="ch2"></div>
+<h3 style="margin-top:26px">Errores frente a la solución exacta</h3>
+<div class="scroll plain"><table id="errT"></table></div>
+<h3 style="margin-top:26px">Tabla por pasos (h₁)</h3>
+<div class="scroll"><table id="tab"></table></div>
+<div class="verdict" style="margin-top:26px"><h3>Interpretación</h3><div id="interp"></div></div>
+</div>
+</section>
+
+
+<section id="historial">
+<h2>5. Historial de simulaciones</h2>
+<p class="lead">Las simulaciones que guardes quedarán registradas en MySQL. Puedes consultar sus parámetros y resultados cuando vuelvas a abrir la página.</p>
+<div class="card">
+<button type="button" id="btnHistorial">Actualizar historial</button>
+<button type="button" id="btnBorrarTodo"
+        style="background:#d1365b">
+    Borrar todo el historial
+</button>
+<p id="estadoBD" class="note" role="status"></p>
+<div class="scroll plain"><table id="tablaHistorial"><thead><tr><th>ID</th><th>Fecha</th><th>Escenario</th><th>V₀</th><th>Volumen final</th><th>Día crítico</th><th>Detalle</th></tr></thead><tbody><tr><td colspan="7">Pulsa «Actualizar historial» para consultar los registros.</td></tr></tbody></table></div>
+<div id="detalleHistorial"></div>
+</div>
+</section>
+
+<section id="metodos">
+<h2>6. Métodos implementados</h2>
+<div class="grid g2">
+<div class="card"><h3>Heun (RK2)</h3><div class="eq">Vₙ₊₁ = Vₙ + (h/2)[f(tₙ,Vₙ) + f(tₙ+h, Vₙ + h·f(tₙ,Vₙ))]</div><p class="note">Orden 2: el error global baja aproximadamente cuatro veces al reducir h a la mitad.</p></div>
+<div class="card"><h3>Runge-Kutta 4</h3><div class="eq">Vₙ₊₁ = Vₙ + (h/6)(k₁ + 2k₂ + 2k₃ + k₄)</div><p class="note">Orden 4: el error baja unas dieciséis veces al reducir h a la mitad. Aquí f(t,V) = a − kV.</p></div>
+</div>
+</section>
+
+<section id="limites">
+<h2>7. Limitaciones</h2>
+<p>Los parámetros son hipotéticos y constantes; no hay lluvia, racionamiento ni variación diaria del consumo. Bajo la reserva mínima el modelo deja de representar una operación real (con V negativo no tiene sentido físico). Los resultados sirven para comparar escenarios, no para predecir la fecha exacta de una crisis.</p>
+</section>
+</main>
+
+<footer><div class="wrap">Desafío individual de Métodos Numéricos · Entrega: 6 de noviembre de 2026 · Título: «¿Cuánto aguanta la represa de La Paz?»</div></footer>
+
+<script src="api_represa.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const fmt=(x,d=4)=>Number(x).toFixed(d);
+const SC=[{n:"Normal",a:1,c:1},{n:"Ahorro 15 %",a:1,c:.85},{n:"Aportes −30 %",a:.7,c:1}];
+function params(){
+  const ids=["V0","A","C","k","Vm","T","h1","h2"],v={},errs=[];
+  ids.forEach(i=>{const el=$(i);el.classList.remove("bad");v[i]=parseFloat(el.value);if(!isFinite(v[i])){errs.push("Completa «"+i+"» con un número.");el.classList.add("bad")}});
+  const need=(c,id,m)=>{if(!errs.length||true){if(!c){errs.push(m);$(id).classList.add("bad")}}};
+  if(!errs.length){
+    need(v.V0>0,"V0","V₀ debe ser mayor que 0 hm³.");
+    need(v.A>=0,"A","A no puede ser negativo.");
+    need(v.C>=0,"C","C no puede ser negativo.");
+    need(v.k>0&&v.k<=1,"k","k debe estar entre 0 y 1 (1/día).");
+    need(v.Vm>=0&&v.Vm<v.V0,"Vm","V mín debe estar entre 0 y V₀.");
+    need(v.T>0&&v.T<=3650,"T","T debe estar entre 0 y 3650 días.");
+    need(v.h1>0&&v.h1<=v.T,"h1","h₁ debe ser mayor que 0 y no superar T.");
+    need(v.h2>0&&v.h2<=v.T,"h2","h₂ debe ser mayor que 0 y no superar T.");
+    if(v.T/Math.min(v.h1,v.h2)>20000)errs.push("Demasiados pasos: aumenta h o reduce T.");
+  }
+  return {v,errs};
+}
+const exact=(p,t)=>{const a=p.a,Ve=a/p.k;return Ve+(p.V0-Ve)*Math.exp(-p.k*t)};
+function run(p,h){
+  const f=(t,y)=>p.a-p.k*y,rows=[];let t=0,hy=p.V0,ry=p.V0;
+  rows.push({t,ex:exact(p,t),he:hy,rk:ry});
+  while(t<p.T-1e-9){
+    const s=Math.min(h,p.T-t);
+    const f1=f(t,hy),f2=f(t+s,hy+s*f1);hy+=s/2*(f1+f2);
+    const k1=f(t,ry),k2=f(t+s/2,ry+s/2*k1),k3=f(t+s/2,ry+s/2*k2),k4=f(t+s,ry+s*k3);
+    ry+=s/6*(k1+2*k2+2*k3+k4);t+=s;
+    rows.push({t,ex:exact(p,t),he:hy,rk:ry});
+  }
+  return rows;
+}
+function stats(rows){
+  let mh=0,mr=0,mrh=0,mrr=0;
+  rows.forEach(r=>{const eh=Math.abs(r.ex-r.he),er=Math.abs(r.ex-r.rk);mh=Math.max(mh,eh);mr=Math.max(mr,er);
+    if(Math.abs(r.ex)>1e-9){mrh=Math.max(mrh,eh/Math.abs(r.ex)*100);mrr=Math.max(mrr,er/Math.abs(r.ex)*100)}});
+  const L=rows[rows.length-1];
+  return {mh,mr,mrh,mrr,fh:Math.abs(L.ex-L.he),fr:Math.abs(L.ex-L.rk)};
+}
+const tstar=p=>{const Ve=p.a/p.k;const num=p.V0-Ve,den=p.Vm-Ve;if(p.V0<=p.Vm)return 0;if(den<=0||num/den<=0)return Infinity;if(p.a>=0&&Ve>=p.Vm)return Infinity;const r=Math.log(num/den)/p.k;return r>=0?r:Infinity};
+function chart(series,p,Vmin,T,h){
+  const W=900,H=380,m={l:56,r:18,t:16,b:40};
+  let lo=Infinity,hi=-Infinity;series.forEach(s=>s.pts.forEach(q=>{lo=Math.min(lo,q[1]);hi=Math.max(hi,q[1])}));
+  lo=Math.min(lo,Vmin,0);hi=Math.max(hi,Vmin)*1.05;
+  const X=t=>m.l+(t/T)*(W-m.l-m.r),Y=v=>H-m.b-((v-lo)/(hi-lo))*(H-m.t-m.b);
+  let g="";
+  for(let i=0;i<=5;i++){const v=lo+(hi-lo)*i/5;g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text x="${m.l-8}" y="${Y(v)+4}" text-anchor="end">${fmt(v,1)}</text>`}
+  for(let i=0;i<=6;i++){const t=T*i/6;g+=`<text x="${X(t)}" y="${H-14}" text-anchor="middle">${fmt(t,0)}</text>`}
+  g+=`<text x="${(W+m.l)/2}" y="${H-1}" text-anchor="middle">tiempo (días)</text><text x="14" y="${H/2}" transform="rotate(-90 14 ${H/2})" text-anchor="middle">volumen (hm³)</text>`;
+  g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${Y(Vmin)}" y2="${Y(Vmin)}" stroke="var(--mut)" stroke-dasharray="6 5" stroke-width="2"/>`;
+  series.forEach(s=>{
+    const d=s.pts.map((q,i)=>(i?"L":"M")+X(q[0]).toFixed(1)+" "+Y(q[1]).toFixed(1)).join("");
+    g+=`<path d="${d}" fill="none" stroke="${s.c}" stroke-width="${s.w||3}" ${s.dash?'stroke-dasharray="'+s.dash+'"':''} stroke-linejoin="round"/>`;
+    if(s.dots)s.pts.forEach(q=>g+=`<circle cx="${X(q[0])}" cy="${Y(q[1])}" r="3.5" fill="${s.c}"/>`);
+  });
+  return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Gráfica de volumen de la represa en el tiempo">${g}</svg>`;
+}
+async function simulate(guardar=true){
+  const {v,errs}=params();$("err").textContent=errs.join(" ");
+  if(errs.length){$("out").hidden=true;return}
+  const s=SC[+$("esc").value];
+  const p={V0:v.V0,k:v.k,Vm:v.Vm,T:v.T,a:v.A*s.a-v.C*s.c};
+  const r1=run(p,v.h1),r2=run(p,v.h2),s1=stats(r1),s2=stats(r2),ts=tstar(p);
+  const dense=[];for(let i=0;i<=200;i++){const t=p.T*i/200;dense.push([t,exact(p,t)])}
+  $("ch1").innerHTML=chart([{pts:dense,c:"var(--agua)",w:3},{pts:r1.map(r=>[r.t,r.he]),c:"var(--heun)",w:2,dash:"7 4",dots:true},{pts:r1.map(r=>[r.t,r.rk]),c:"var(--rk)",w:2,dots:false}],p,p.Vm,p.T);
+  const cols=["var(--agua)","var(--heun)","var(--rk)"],ex3=[];
+  const tss=SC.map((q,j)=>{const pp={...p,a:v.A*q.a-v.C*q.c};const pts=[];for(let i=0;i<=200;i++){const t=p.T*i/200;pts.push([t,exact(pp,t)])}ex3.push({pts,c:cols[j],w:3});return tstar(pp)});
+  $("ch2").innerHTML=`<div class="leg">${SC.map((q,j)=>`<span><i style="background:${cols[j]}"></i>${q.n}: ${isFinite(tss[j])&&tss[j]<=p.T?"día "+fmt(tss[j],1):"no llega en T"}</span>`).join("")}</div>`+chart(ex3,p,p.Vm,p.T);
+  const reach=isFinite(ts)&&ts<=p.T;
+  $("kpis").innerHTML=`<div class="kpi ${reach?'warn':''}"><b>${reach?"día "+fmt(ts,1):"no llega"}</b><span>t* analítico: volumen = V mín (${s.n})</span></div>
+  <div class="kpi"><b>${fmt(exact(p,p.T),2)} hm³</b><span>volumen exacto al día ${fmt(p.T,0)}</span></div>
+  <div class="kpi"><b>${fmt(p.a,3)} hm³/día</b><span>aporte neto a = A − C</span></div>
+  <div class="kpi"><b>${isFinite(tss[0])&&isFinite(tss[1])?fmt(tss[1]-tss[0],1)+" días":"—"}</b><span>días ganados con ahorro del 15 %</span></div>`;
+  $("errT").innerHTML=`<tr><th>Paso</th><th>Método</th><th>Error abs. máx (hm³)</th><th>Error rel. máx (%)</th><th>Error abs. final (hm³)</th></tr>`+
+  [[v.h1,s1],[v.h2,s2]].map(([h,s])=>`<tr><td>h = ${h} d</td><td>Heun</td><td>${s.mh.toExponential(3)}</td><td>${s.mrh.toExponential(3)}</td><td>${s.fh.toExponential(3)}</td></tr><tr><td>h = ${h} d</td><td>RK4</td><td>${s.mr.toExponential(3)}</td><td>${s.mrr.toExponential(3)}</td><td>${s.fr.toExponential(3)}</td></tr>`).join("");
+  $("tab").innerHTML=`<tr><th>n</th><th>t (d)</th><th>Exacta</th><th>Heun</th><th>RK4</th><th>Err abs Heun</th><th>Err abs RK4</th><th>Err rel Heun %</th><th>Err rel RK4 %</th></tr>`+
+  r1.map((r,i)=>{const eh=Math.abs(r.ex-r.he),er=Math.abs(r.ex-r.rk),nz=Math.abs(r.ex)>1e-9;return `<tr><td>${i}</td><td>${fmt(r.t,2)}</td><td>${fmt(r.ex,5)}</td><td>${fmt(r.he,5)}</td><td>${fmt(r.rk,5)}</td><td>${eh.toExponential(2)}</td><td>${er.toExponential(2)}</td><td>${nz?fmt(eh/Math.abs(r.ex)*100,5):"—"}</td><td>${nz?fmt(er/Math.abs(r.ex)*100,5):"—"}</td></tr>`}).join("");
+  const best=s1.mr<s1.mh?"RK4":"Heun",ratio=s1.mh/Math.max(s1.mr,1e-300);
+  $("interp").innerHTML=`<p>En el escenario «${s.n}», ${reach?`la represa llegaría a la reserva mínima (${fmt(p.Vm,1)} hm³) hacia el <b>día ${fmt(ts,1)}</b> de la temporada seca. Después de ese día habría que racionar.`:`la represa no baja de la reserva mínima en ${fmt(p.T,0)} días con estos parámetros.`}</p>
+  <p>Comparando los tres escenarios, ahorrar 15 % de agua ${isFinite(tss[1])&&isFinite(tss[0])?`gana unos <b>${fmt(tss[1]-tss[0],1)} días</b>`:"cambia el día crítico"}, y una caída del 30 % de los aportes ${isFinite(tss[2])&&isFinite(tss[0])?`lo adelanta unos <b>${fmt(tss[0]-tss[2],1)} días</b>`:"lo adelanta"}.</p>
+  <p><b>${best}</b> tuvo el menor error con h = ${v.h1} d (${s1.mr.toExponential(2)} hm³ para RK4 frente a ${s1.mh.toExponential(2)} para Heun, unas ${ratio>=1?fmt(ratio,0):"—"} veces menos). Al reducir el paso a ${v.h2} d, el error máximo de Heun pasó de ${s1.mh.toExponential(2)} a ${s2.mh.toExponential(2)} y el de RK4 de ${s1.mr.toExponential(2)} a ${s2.mr.toExponential(2)}.</p>
+  <p class="note" style="color:#bfe0e6">Los parámetros son hipotéticos. El resultado compara escenarios y no es una predicción comprobada con datos reales.</p>`;
+  $("resid").textContent=`Comprobación numérica en t = ${fmt(p.T/2,1)} d: V′ + kV − a = ${(()=>{const t=p.T/2,Ve=p.a/p.k,d=-p.k*(p.V0-Ve)*Math.exp(-p.k*t);return (d+p.k*exact(p,t)-p.a).toExponential(2)})()} ≈ 0.`;
+  $("out").hidden=false;
+  if(guardar){
+    try {
+      const payload={
+        escenario:s.n,V0:v.V0,A:v.A,C:v.C,k:v.k,Vm:v.Vm,T:v.T,h1:v.h1,h2:v.h2,
+        aporteNeto:p.a,diaCritico:isFinite(ts)?ts:null,
+        exactaFinal:r1[r1.length-1].ex,heunFinal:r1[r1.length-1].he,rk4Final:r1[r1.length-1].rk,
+        errorHeun:s1.mh,errorRK4:s1.mr,
+        detalleH1:r1,detalleH2:r2
+      };
+      const guardado=await guardarSimulacion(payload);
+      $("err").textContent="Simulación guardada en MySQL. ID: "+guardado.id;
+      cargarHistorial();
+    } catch(e) {
+      $("err").textContent="Cálculo realizado, pero no se pudo guardar: "+e.message;
+    }
+  }
+}
+$("go").addEventListener("click",()=>simulate(true));
+$("btnHistorial").addEventListener("click",cargarHistorial);
+$("btnBorrarTodo").addEventListener("click", async () => {
+
+    if (!confirm("¿Estás segura? Se eliminarán TODAS las simulaciones y sus detalles.")) {
+        return;
+    }
+
+    try {
+        await borrarTodoHistorial();
+
+        $("detalleHistorial").innerHTML = "";
+
+        alert("Todo el historial fue eliminado correctamente.");
+
+        cargarHistorial();
+
+    } catch (e) {
+        alert("Error al borrar: " + e.message);
+    }
+});
+async function cargarHistorial(){
+  const body=$("tablaHistorial").querySelector("tbody");
+  $("estadoBD").textContent="Consultando la base de datos...";
+  try{
+    const rows=await listarSimulaciones();
+   
+body.innerHTML = rows.length
+? rows.map(x => `
+<tr>
+    <td>${Number(x.id)}</td>
+    <td>${escapar(x.fecha)}</td>
+    <td>${escapar(x.escenario)}</td>
+    <td>${Number(x.V0).toFixed(2)}</td>
+    <td>${Number(x.exacta_final).toFixed(4)}</td>
+    <td>${x.dia_critico === null ? "No llega" : Number(x.dia_critico).toFixed(2) + " d"}</td>
+    <td>
+        <button type="button"
+                data-id="${Number(x.id)}"
+                class="verRegistro">
+            Ver
+        </button>
+
+        <button type="button"
+                data-id="${Number(x.id)}"
+                class="eliminarRegistro"
+                style="background:#d1365b">
+            Eliminar
+        </button>
+    </td>
+</tr>
+`).join("")
+: '<tr><td colspan="7">Todavía no hay simulaciones guardadas.</td></tr>';
+
+body.querySelectorAll(".verRegistro").forEach(b =>
+    b.addEventListener("click", () =>
+        verDetalle(Number(b.dataset.id))
+    )
+);
+
+body.querySelectorAll(".eliminarRegistro").forEach(b =>
+    b.addEventListener("click", async () => {
+        const id = Number(b.dataset.id);
+
+        if (!confirm("¿Seguro que deseas eliminar la simulación #" + id + "?")) {
+            return;
+        }
+
+        try {
+            await eliminarSimulacion(id);
+            alert("Simulación eliminada correctamente.");
+
+            $("detalleHistorial").innerHTML = "";
+            cargarHistorial();
+
+        } catch (e) {
+            alert("No se pudo eliminar: " + e.message);
+        }
+    })
+);
+
+    body.querySelectorAll(".verRegistro").forEach(b=>b.addEventListener("click",()=>verDetalle(Number(b.dataset.id))));
+    $("estadoBD").textContent="Registros encontrados: "+rows.length;
+  }catch(e){$("estadoBD").textContent="No se pudo consultar MySQL: "+e.message;}
+}
+async function verDetalle(id){
+  const box=$("detalleHistorial");box.innerHTML="<p class='note'>Cargando detalle...</p>";
+  try{
+    const r=await obtenerDetalleSimulacion(id),s=r.simulacion;
+    box.innerHTML=`<h3>Detalle de simulación #${Number(s.id)} — ${escapar(s.escenario)}</h3><p class="note">Fecha: ${escapar(s.fecha)} · Aporte neto: ${Number(s.aporte_neto).toFixed(4)} · Error máximo Heun: ${Number(s.error_heun).toExponential(3)} · Error máximo RK4: ${Number(s.error_rk4).toExponential(3)}</p><div class="scroll"><table><thead><tr><th>Paso</th><th>n</th><th>t (d)</th><th>Exacta</th><th>Heun</th><th>RK4</th></tr></thead><tbody>${r.detalle.map(d=>`<tr><td>${escapar(d.paso)}</td><td>${Number(d.numero_paso)}</td><td>${Number(d.tiempo).toFixed(3)}</td><td>${Number(d.exacta).toFixed(6)}</td><td>${Number(d.heun).toFixed(6)}</td><td>${Number(d.rk4).toFixed(6)}</td></tr>`).join("")}</tbody></table></div>`;
+  }catch(e){box.textContent="No se pudo cargar el detalle: "+e.message;}
+}
+function escapar(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+simulate(false);
+</script>
+</body>
+</html>

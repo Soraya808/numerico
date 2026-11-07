@@ -1,0 +1,16 @@
+PROYECTO REPRESA LA PAZ CON MYSQL
+
+INSTALACIÓN:
+1. Copia la carpeta represa_la_paz_mysql dentro de C:\xampp\htdocs\
+2. En XAMPP inicia Apache y MySQL.
+3. Abre http://localhost/phpmyadmin
+4. Importa database/bd_represa.sql
+5. Si tu MySQL usa otra contraseña, cambia backend/conexion.php
+6. Abre http://localhost/represa_la_paz_mysql/public/
+
+USO:
+- Pulsa Simular: calcula con las fórmulas originales y guarda el resultado.
+- En Historial pulsa Actualizar historial.
+- Pulsa Ver para consultar todos los pasos guardados de Heun y RK4.
+
+No abras index.html con doble clic: utiliza localhost para que PHP pueda ejecutarse.

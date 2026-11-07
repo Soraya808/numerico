@@ -1,0 +1,4 @@
+<?php
+declare(strict_types=1); header('Content-Type: application/json; charset=utf-8'); require __DIR__.'/conexion.php';
+$id=filter_input(INPUT_GET,'id',FILTER_VALIDATE_INT); if(!$id||$id<1){http_response_code(400);echo json_encode(['ok'=>false,'mensaje'=>'ID inválido']);exit;}
+try{$q=$pdo->prepare('SELECT * FROM simulaciones WHERE id=?');$q->execute([$id]);$s=$q->fetch();if(!$s){http_response_code(404);echo json_encode(['ok'=>false,'mensaje'=>'Registro no encontrado']);exit;}$d=$pdo->prepare('SELECT paso,numero_paso,tiempo,exacta,heun,rk4 FROM detalle_simulacion WHERE simulacion_id=? ORDER BY FIELD(paso,"h1","h2"),numero_paso');$d->execute([$id]);echo json_encode(['ok'=>true,'simulacion'=>$s,'detalle'=>$d->fetchAll()]);}catch(Throwable $e){http_response_code(500);echo json_encode(['ok'=>false,'mensaje'=>'No se pudo obtener el detalle']);}
